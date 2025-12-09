@@ -21,7 +21,14 @@ pip install -r requirements.txt
 python launcher.py
 ```
 
-El launcher permite ejecutar cada problema. Seleccionar video MP4 opcionalmente (sin video = webcam).
+El launcher ofrece una interfaz gráfica (GUI) para gestionar todos los desafíos.
+
+**Características del Launcher:**
+- **Selección de Video:** Permite elegir un archivo MP4. Si no se selecciona ninguno, los problemas intentarán usar la webcam por defecto.
+- **Botones Dedicados:** Un botón para cada problema (1, 2, 3 y 4).
+- **Ejecución Independiente:** Cada problema se ejecuta en su propio proceso, manteniendo la consola libre para logs.
+
+> **Nota:** El "Problema 3" ignora la selección de video del launcher ya que se configura vía `config.yaml`. El "Problema 4" está diseñado para usar siempre la webcam directamente.
 
 ---
 
@@ -39,11 +46,17 @@ El launcher permite ejecutar cada problema. Seleccionar video MP4 opcionalmente 
 | Export | JSON cada 1s + Video MP4 |
 | Storage | AWS S3 (boto3) |
 
-### Ejecución
+### Ejecución Manual
 ```bash
 cd "Problema 1"
+# Usar video
 python main.py video.mp4
+
+# Usar webcam (por defecto)
+python main.py
 ```
+
+> **Nota:** Al iniciar y finalizar, el script puede preguntar si deseas limpiar los archivos JSON generados anteriormente.
 
 ---
 
@@ -86,12 +99,24 @@ Problema 2/
 }
 ```
 
-### Ejecución
+### Ejecución Manual
 ```bash
 cd "Problema 2"
-python main.py --source rtsp://... 
-# o sin --source para webcam
+
+# RTSP Stream
+python main.py --source rtsp://usuario:password@ip:port/stream
+
+# Video Local
+python main.py --source video.mp4
+
+# Webcam (default)
+python main.py
 ```
+
+**Argumentos Adicionales:**
+- `--no-display`: Ejecuta sin mostrar ventana (headless).
+- `--output-dir`: Cambiar directorio de JSONs.
+- `--video-output-dir`: Cambiar directorio de video.
 
 ---
 
@@ -135,9 +160,36 @@ Problema 3/
 
 Para real-time estricto se requeriría: GStreamer, hardware decode (NVDEC), zero-copy buffers.
 
+### Ejecución Manual
+```bash
+cd "Problema 3"
+python main.py --config config.yaml
+```
+
+**Teclas en Runtime:**
+- `q`: Salir
+- `r`: Recargar configuración (Hot-reload de `config.yaml`)
+
+**Argumentos:**
+- `--no-api`: Desactiva el servidor REST.
+- `--no-display`: Ejecuta sin interfaz gráfica.
+
 ---
 
 ## Problema 4: Agentes
+
+**Demo Implementada:** `simple_agent.py`
+Un agente básico que demuestra la detección de:
+- **Manos** (MediaPipe)
+- **Pose** (MediaPipe)
+- **Objetos** (YOLOv8n)
+- **Lógica Simple:** Reglas de seguridad básicas (mano detectada, operador presente).
+
+### Ejecución Manual
+```bash
+cd "Problema 4"
+python simple_agent.py
+```
 
 ### ¿Qué agentes para analizar video de puesto de trabajo?
 
