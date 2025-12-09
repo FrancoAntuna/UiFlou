@@ -15,6 +15,23 @@ python -m venv venv
 pip install -r requirements.txt
 ```
 
+## ☁️ Configuración AWS
+Para habilitar la subida de archivos a S3 (utilizado en Problema 1), es necesario configurar las siguientes variables de entorno. Puedes hacer esto en tu terminal o setearlas en tu sistema.
+
+**Variables requeridas:**
+- `AWS_ACCESS_KEY_ID`: Tu access key ID
+- `AWS_SECRET_ACCESS_KEY`: Tu secret access key
+- `AWS_REGION`: Región de AWS (ej: `us-east-1`)
+
+**Configuración Powershell:**
+```powershell
+$env:AWS_ACCESS_KEY_ID="TU_ACCESS_KEY"
+$env:AWS_SECRET_ACCESS_KEY="TU_SECRET_KEY"
+$env:AWS_REGION="us-east-1"
+```
+
+> **Nota:** El nombre del bucket se define normalmente en `config.json` dentro del directorio del problema.
+
 ## 🚀 Uso
 
 ```bash
@@ -178,72 +195,65 @@ python main.py --config config.yaml
 
 ## Problema 4: Agentes
 
-**Demo Implementada:** `simple_agent.py`
-Un agente básico que demuestra la detección de:
-- **Manos** (MediaPipe)
-- **Pose** (MediaPipe)
-- **Objetos** (YOLOv8n)
-- **Lógica Simple:** Reglas de seguridad básicas (mano detectada, operador presente).
+Este desafío consta de dos partes: una **propuesta teórica** para un sistema completo y una **implementación simplificada** de un solo agente.
 
-### Ejecución Manual
+### 🧠 Parte A: Propuesta Teórica (Arquitectura)
+*Respuesta a: ¿Qué agentes usarías? ¿Qué arquitectura? ¿Qué tecnologías?*
+
+Para un entorno productivo real, propongo una arquitectura distribuida y desacoplada:
+
+**1. Agentes Propuestos:**
+*   **Safety Agent:** Detecta EPP (casco, chaleco, gafas) y zonas prohibidas.
+*   **Ergonomics Agent:** Analiza posturas (ángulos de espalda, repetición de movimientos) para prevenir lesiones.
+*   **Workflow Agent:** Identifica herramientas en uso y mide tiempos de ciclo (Time-Motion study).
+*   **Quality Agent:** Inspección visual del resultado del trabajo (si es visible).
+
+**2. Arquitectura Multiagente:**
+Diseño basado en **Orquestador + Micro-agentes**:
+
+```mermaid
+graph TD
+    Input[Stream Cámara] --> Orchestrator
+    Orchestrator -->|Frame Routing| Safety[Safety Agent]
+    Orchestrator -->|Frame Routing| Ergo[Ergonomics Agent]
+    Orchestrator -->|Frame Routing| Tools[Workflow Agent]
+    
+    Safety -->|Events| PubSub[Redis / Queue]
+    Ergo -->|Events| PubSub
+    Tools -->|Events| PubSub
+    
+    PubSub --> AlertSystem[Sistema Alertas]
+    PubSub --> Dashboard[Analytics Dashboard]
+```
+
+**3. Stack Tecnológico Sugerido:**
+*   **Orquestación:** Ray (ideal para workloads distribuidos de CV/ML) o Apache Storm/Flink para procesamiento de streams.
+*   **Comunicación:** Redis Streams o RabbitMQ (baja latencia).
+*   **Modelos:**
+    *   *YOLOv8-Pose* (Ergonomía)
+    *   *YOLOv8-World* (Detección open-vocabulary de herramientas)
+    *   *MediaPipe* (Gestos finos de manos)
+
+---
+
+### 💻 Parte B: Implementación de Ejemplo (Agente Simple)
+*Respuesta a: Código de ejemplo de un agente (muy simple)*
+
+Como solicita el enunciado ("código muy simple"), se implementó un script monolítico (`simple_agent.py`) que condensa capacidades básicas en un solo proceso. **No es la arquitectura completa**, sino una demostración de capacidades de bajo nivel.
+
+**Capacidades del Demo:**
+*   **Detección de Manos:** MediaPipe Hands (Coord. 21 puntos).
+*   **Detección de Pose:** MediaPipe Pose (Esqueleto completo).
+*   **Detección de Objetos:** YOLOv8 Nano (Personas, botellas, herramientas).
+*   **Lógica de Negocio (Mock):** `check_safety_rules()` simula alertas si detecta manos o falta de operador.
+
+**Ejecución:**
 ```bash
 cd "Problema 4"
+# Requiere webcam
 python simple_agent.py
 ```
 
-### ¿Qué agentes para analizar video de puesto de trabajo?
-
-La decisión de qué agentes utilizar está directamente relacionada al puesto de trabajo que se está controlando. No existe una solución única; depende del contexto operativo.
-
-**Enfoque general propuesto:**
-
-**Fase 1 - Agentes Core:**
-1. **PoseAgent** - Detecta poses y posturas ergonómicas, yolov8-pose es de los mas robustos.
-2. **HandDetectionAgent** - Detección de manos para monitoreo de tareas manuales, por ejemplo MediaPipe.
-3. **SafetyAgent** - Detección de EPP (casco, guantes, chaleco). Implementación: red neuronal preentrenada (ej. YOLOv8) con fine-tuning sobre dataset de EPP específico
-
-**Fase 2 - Agentes de Análisis:**
-4. **TimeTrackingAgent** - Mide tiempos de actividades y ciclos de trabajo
-5. **AnomalyAgent** - Detecta comportamientos inusuales o desviaciones del proceso estándar
-6. **ActionAgent** - Clasifica acciones específicas del puesto (sentado, de pie, levantando peso)
-
-### Arquitectura Multiagente
-
-```
-┌─────────────────────────────────────────────────┐
-│                  Orchestrator                   │
-│         (coordina, prioriza, combina)           │
-└──────────────┬──────────────────────────────────┘
-               │
-    ┌──────────┴┐───────────┐───────────┐
-    ▼           ▼           ▼           ▼
-┌────────┐  ┌────────┐  ┌────────┐  ┌────────┐
-│ Pose   │  │ Action │  │ Safety │  │Anomaly │
-│ Agent  │  │ Agent  │  │ Agent  │  │ Agent  │
-└────┬───┘  └────┬───┘  └────┬───┘  └────┬───┘
-     │           │           │           │
-     └───────────┴─────┬─────┴───────────┘
-                       ▼
-              ┌─────────────────┐
-              │  Shared Memory  │
-              │  (Redis/Queue)  │
-              └─────────────────┘
-```
-
-**Interacción:**
-- Orchestrator distribuye frames a agentes
-- Agentes procesan en paralelo y publican resultados
-- Shared Memory permite comunicación inter-agente
-- Orchestrator fusiona resultados y genera alertas
-
-### Tecnologías/Frameworks
-
-| Uso | Tecnología |
-|-----|------------|
-| Orquestación | LangGraph, CrewAI |
-| Mensajería | Redis Streams, RabbitMQ |
-| CV Models | Ultralytics, MediaPipe |
-| LLM (opcional) | GPT-4V, LLaVA |
 
 ### 📝 Trazabilidad y Artifacts (.md)
 Es fundamental guardar las bitacoras generadas por los agentes (archivos `.md`) para mantener una trazabilidad completa de las acciones realizadas. Esto permite:
