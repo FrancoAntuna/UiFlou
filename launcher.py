@@ -14,7 +14,7 @@ class ProblemLauncher:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Problem Launcher")
-        self.root.geometry("420x420")
+        self.root.geometry("420x480")
         self.root.resizable(False, False)
         
         self.selected_video = None
@@ -72,11 +72,16 @@ class ProblemLauncher:
             command=self._run_problema3, **btn_style
         ).pack(pady=6)
         
+        tk.Button(
+            btn_frame, text="🤖 Problema 4: Agente Simple",
+            command=self._run_problema4, **btn_style
+        ).pack(pady=6)
+        
         # Separador
         tk.Frame(self.root, height=2, bg="#45475a").pack(fill="x", padx=30, pady=10)
         
         tk.Label(
-            self.root, text="Problema 3 siempre usa config.yaml",
+            self.root, text="P3 usa config.yaml | P4 usa webcam directamente",
             font=("Segoe UI", 9), bg="#1e1e2e", fg="#6c7086"
         ).pack(pady=5)
     
@@ -129,6 +134,11 @@ class ProblemLauncher:
         """Ejecuta Problema 3 (usa config.yaml por defecto)."""
         problema_dir = Path(__file__).parent / "Problema 3"
         self._run_process(str(problema_dir), ["main.py"])
+    
+    def _run_problema4(self):
+        """Ejecuta Problema 4 (agente simple, solo webcam)."""
+        problema_dir = Path(__file__).parent / "Problema 4"
+        self._run_process(str(problema_dir), ["simple_agent.py"])
     
     def run(self):
         self.root.mainloop()

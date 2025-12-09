@@ -159,12 +159,12 @@ La decisión de qué agentes utilizar está directamente relacionada al puesto d
 
 ```
 ┌─────────────────────────────────────────────────┐
-│                  Orchestrator                    │
+│                  Orchestrator                   │
 │         (coordina, prioriza, combina)           │
 └──────────────┬──────────────────────────────────┘
                │
-    ┌──────────┴──────────┐
-    ▼                     ▼
+    ┌──────────┴┐───────────┐───────────┐
+    ▼           ▼           ▼           ▼
 ┌────────┐  ┌────────┐  ┌────────┐  ┌────────┐
 │ Pose   │  │ Action │  │ Safety │  │Anomaly │
 │ Agent  │  │ Agent  │  │ Agent  │  │ Agent  │
