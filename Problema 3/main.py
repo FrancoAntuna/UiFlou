@@ -5,8 +5,8 @@ import uvicorn
 import argparse
 from pathlib import Path
 
-from camera_manager import CameraManager
-from api import app, init_manager
+from processors.camera_manager import CameraManager
+from processors.api import app, init_manager
 
 
 def run_display(manager: CameraManager, display_cfg: dict):

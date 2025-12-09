@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from typing import Optional
 import cv2
 
-from camera_manager import CameraManager
+from .camera_manager import CameraManager
 
 app = FastAPI(title="Multicamera Streaming API", version="1.0.0")
 manager: Optional[CameraManager] = None

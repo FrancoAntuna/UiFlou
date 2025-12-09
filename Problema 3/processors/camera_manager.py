@@ -6,7 +6,7 @@ from pathlib import Path
 from datetime import datetime
 from typing import Dict, Optional, List
 
-from camera_stream import CameraStream, CameraConfig
+from .camera_stream import CameraStream, CameraConfig
 
 
 class CameraManager:
