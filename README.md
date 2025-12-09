@@ -193,6 +193,11 @@ La decisión de qué agentes utilizar está directamente relacionada al puesto d
 | CV Models | Ultralytics, MediaPipe |
 | LLM (opcional) | GPT-4V, LLaVA |
 
+### 📝 Trazabilidad y Artifacts (.md)
+Es fundamental guardar las bitacoras generadas por los agentes (archivos `.md`) para mantener una trazabilidad completa de las acciones realizadas. Esto permite:
+1.  **Auditoría de Decisiones:** Entender por qué un agente tomó cierta decisión en un momento dado.
+2.  **Contexto para Futuros Agentes:** Un agente puede leer estos archivos para comprender el contexto histórico, identificar problemas previos y evitar repetir errores, mejorando la continuidad del desarrollo.
+
 ## 📋 Dependencias Consolidadas
 
 ```txt
@@ -204,4 +209,5 @@ pyyaml>=6.0
 fastapi>=0.104.0
 uvicorn>=0.24.0
 pydantic>=2.0.0
+mediapipe>=0.10.21
 ```
