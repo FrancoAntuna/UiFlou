@@ -236,23 +236,30 @@ graph TD
 
 ---
 
-### 💻 Parte B: Implementación de Ejemplo (Agente Simple)
+### 💻 Parte B: Implementación de Ejemplo (Agente con Ray)
 *Respuesta a: Código de ejemplo de un agente (muy simple)*
 
-Como solicita el enunciado ("código muy simple"), se implementó un script monolítico (`simple_agent.py`) que condensa capacidades básicas en un solo proceso. **No es la arquitectura completa**, sino una demostración de capacidades de bajo nivel.
+Se implementó `simple_agent.py` usando **Ray** para demostrar una arquitectura multi-agente distribuida de forma práctica y legible.
 
-**Capacidades del Demo:**
-*   **Detección de Manos:** MediaPipe Hands (Coord. 21 puntos).
-*   **Detección de Pose:** MediaPipe Pose (Esqueleto completo).
-*   **Detección de Objetos:** YOLOv8 Nano (Personas, botellas, herramientas).
-*   **Lógica de Negocio (Mock):** `check_safety_rules()` simula alertas si detecta manos o falta de operador.
+**Arquitectura:**
+*   **HandAgent:** Actor Ray para detección de manos (MediaPipe)
+*   **PoseAgent:** Actor Ray para detección de pose (MediaPipe)
+*   **ObjectAgent:** Actor Ray para detección de objetos (YOLO)
+*   Procesamiento paralelo real con `ray.remote`
+
+**Ventajas sobre script monolítico:**
+*   🚀 Cada agente corre en su propio proceso (paralelismo real)
+*   📦 Base escalable para múltiples cámaras o workers remotos
+*   🔧 Demuestra la arquitectura propuesta en la Parte A
 
 **Ejecución:**
 ```bash
 cd "Problema 4"
-# Requiere webcam
+# Requiere webcam y ray instalado
 python simple_agent.py
 ```
+
+> **Nota:** Aunque el código es "simple" en términos de líneas, utiliza Ray para demostrar la arquitectura distribuida propuesta.
 
 
 ### 📝 Trazabilidad y Artifacts (.md)
@@ -272,4 +279,5 @@ fastapi>=0.104.0
 uvicorn>=0.24.0
 pydantic>=2.0.0
 mediapipe>=0.10.21
+ray>=2.0.0
 ```
