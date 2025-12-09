@@ -15,6 +15,8 @@ python -m venv venv
 pip install -r requirements.txt
 ```
 
+> **Nota:** Se decidio no utilizar docker dado el tiempo asignado para la prueba tecnica.
+
 ## ☁️ Configuración AWS
 Para habilitar la subida de archivos a S3 (utilizado en Problema 1), es necesario configurar las siguientes variables de entorno. Puedes hacer esto en tu terminal o setearlas en tu sistema.
 
