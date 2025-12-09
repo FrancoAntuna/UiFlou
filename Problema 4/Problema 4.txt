@@ -1,0 +1,5 @@
+EJERCICIO 4 — Agentes
+● ¿Qué agentes implementarías para analizar un video de un puesto de trabajo?
+● Propone una arquitectura multiagente en caso de tener varios agentes indicando como interactúan entre si.
+● ¿Qué tecnologías/frameworks usarías?
+● Código de ejemplo de un agente (muy simple)

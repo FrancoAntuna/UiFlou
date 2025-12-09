@@ -1,0 +1,14 @@
+EJERCICIO 1 — Procesamiento de video
+Implementar uno o varios script en Python que:
+● Procese un video MP4 para realizar:
+○ Pose estimation
+○ Detección de acciones humanas (HAR)
+● utilizar la/las redes que considere necesarias.
+● Las acciones a detectar tienen una duración de 9 segundos
+● Implementar tracking para identificar a todas las personas presentes en el video.
+● Calcule los ángulos del cuerpo de cada persona.
+● Generar archivos de datos parciales cada 1 segundo, en el formato que considere óptimo.
+● Generar un video procesado con poses, acciones y anotaciones visuales.
+● Considerar que los datos van a serán consumidos y reproducidos con el video independientemente de en
+que archivo se encuentren por un proceso externo.
+● Suba los archivos automáticamente a AWS S3.

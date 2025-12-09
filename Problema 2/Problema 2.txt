@@ -1,0 +1,8 @@
+EJERCICIO 2 —Streaming RTSP
+Se requiere aplicar pose estimación y object detection a una cámara RTSP y obtener video procesado como resultado
+que debe poder ser consumido durante la captura o finalizada la misma.
+● Definir estructura del sistema
+● Definir el formato de video
+● Definir formato de datos
+● Implementar uno o varios scripts python para resolver la problemática.
+● Almacenar los datos de salida donde lo considere pertinente.

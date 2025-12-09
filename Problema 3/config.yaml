@@ -1,0 +1,41 @@
+# Multicamera Streaming Configuration
+
+server:
+  host: "0.0.0.0"
+  port: 8000
+
+output:
+  base_dir: "output"
+  record: false
+  format: "mp4"
+  codec: "mp4v"
+
+display:
+  enabled: true
+  grid_cols: 2
+  window_name: "Multicamera Stream"
+
+cameras:
+  - id: "cam_01"
+    name: "Camera 1"
+    source: 0  # Webcam or RTSP URL
+    enabled: true
+    fps: 30
+    width: 640
+    height: 480
+
+  - id: "cam_02"
+    name: "Camera 2"
+    source: "rtsp://example.com/stream2"
+    enabled: false
+    fps: 25
+    width: 640
+    height: 480
+
+  - id: "cam_03"
+    name: "Camera 3"
+    source: "rtsp://example.com/stream3"
+    enabled: false
+    fps: 25
+    width: 640
+    height: 480

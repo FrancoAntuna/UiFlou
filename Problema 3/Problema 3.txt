@@ -1,0 +1,9 @@
+EJERCICIO 3 — Streaming Multicámara
+Implementar sistema de streaming que soporte múltiples cámaras RTSP (mínimo 3):
+● Definir estructura del sistema
+● Definir el formato de video
+● Implementar uno o varios scripts python para resolver la problemática.
+● Almacenar los datos de salida donde lo considere pertinente.
+● Proponer una solución tecnológica o de arquitectura para permitir modificar parámetros del sistema durante
+su ejecución (no es necesario código).
+● Es real-time o near real-time?
